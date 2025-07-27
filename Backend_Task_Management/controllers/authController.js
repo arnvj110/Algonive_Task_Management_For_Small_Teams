@@ -6,7 +6,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
 // Register
 const register = async (req, res) => {
-    console.log(req.body);
+    
     try {
         const { username, email, password } = req.body;
         
@@ -64,8 +64,8 @@ const login = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Login error:', error);
-        res.status(500).json({ message: 'Server error during login' });
+        
+        res.status(500).json({ message: 'Server error during login', error: error });
     }
 };
 

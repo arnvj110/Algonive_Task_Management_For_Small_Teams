@@ -13,7 +13,7 @@ exports.createTask = async (req, res) => {
       dueDate,
       priority,
       subtasks,
-      createdBy: req.user,
+      createdBy: req.user.userId,
       team: req.team,
     });
 
@@ -28,8 +28,8 @@ exports.createTask = async (req, res) => {
 
     res.status(201).json(task);
   } catch (err) {
-    console.error("Create task error:", err);
-    res.status(500).json({ msg: "Server error" });
+    
+    res.status(500).json({ msg: "Server error", error : err });
   }
 };
 
@@ -39,8 +39,8 @@ exports.getAssignedTasks = async (req, res) => {
     const tasks = await Task.find({ assignedTo: req.user });
     res.json(tasks);
   } catch (err) {
-    console.error("Get assigned tasks error:", err);
-    res.status(500).json({ msg: "Server error" });
+    
+    res.status(500).json({ msg: "Server error", error : err });
   }
 };
 
@@ -50,8 +50,8 @@ exports.getTeamTasks = async (req, res) => {
     const tasks = await Task.find({ team: req.team });
     res.json(tasks);
   } catch (err) {
-    console.error("Get team tasks error:", err);
-    res.status(500).json({ msg: "Server error" });
+    
+    res.status(500).json({ msg: "Server error", error: err });
   }
 };
 
@@ -70,8 +70,8 @@ exports.updateTask = async (req, res) => {
 
     res.json(task);
   } catch (err) {
-    console.error("Update task error:", err);
-    res.status(500).json({ msg: "Server error" });
+    
+    res.status(500).json({ msg: "Server error", error: err });
   }
 };
 
@@ -86,7 +86,7 @@ exports.deleteTask = async (req, res) => {
 
     res.json({ msg: "Task deleted successfully" });
   } catch (err) {
-    console.error("Delete task error:", err);
-    res.status(500).json({ msg: "Server error" });
+    
+    res.status(500).json({ msg: "Server error", error: err });
   }
 };
