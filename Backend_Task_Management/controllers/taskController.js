@@ -35,14 +35,18 @@ exports.createTask = async (req, res) => {
 
 // Get tasks assigned to the logged-in user
 exports.getAssignedTasks = async (req, res) => {
+  
   try {
-    const tasks = await Task.find({ assignedTo: req.user });
+    // Extract the user ID (adjust to your auth middleware's user object)
+    const userId = req.user.userId || req.user._id;
+
+    const tasks = await Task.find({ assignedTo: userId });
     res.json(tasks);
   } catch (err) {
-    
-    res.status(500).json({ msg: "Server error", error : err });
+    res.status(500).json({ msg: "Server error", error: err });
   }
 };
+
 
 // Get all tasks for the user's team
 exports.getTeamTasks = async (req, res) => {
