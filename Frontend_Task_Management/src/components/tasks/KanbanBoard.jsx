@@ -3,15 +3,16 @@ import React from "react";
 const KanbanBoard = ({ tasks = [] }) => {
   // Group tasks by status
   const columns = {
-    todo: [],
+    pending: [],
     inProgress: [],
     done: [],
   };
 
   tasks.forEach(task => {
-    if (task.status === "inProgress") columns.inProgress.push(task);
-    else if (task.status === "done") columns.done.push(task);
-    else columns.todo.push(task);
+    
+    if (task.status === "in-progress") columns.inProgress.push(task);
+    else if (task.status === "completed") columns.done.push(task);
+    else columns.pending.push(task);
   });
 
   return (

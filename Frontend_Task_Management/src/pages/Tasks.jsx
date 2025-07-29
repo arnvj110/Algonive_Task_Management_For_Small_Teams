@@ -8,6 +8,7 @@ const Tasks = () => {
   const { teamTasks, loading, createTask } = useTasks();
 
   const handleCreateTask = async (taskData) => {
+    
     await createTask(taskData);
     setShowForm(false);
   };
@@ -31,7 +32,7 @@ const Tasks = () => {
       {loading ? (
         <div>Loading tasks...</div>
       ) : (
-        <KanbanBoard tasks={teamTasks} />
+        <KanbanBoard  tasks={teamTasks} />
        
       )}
     </div>

@@ -1,65 +1,69 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import api from "../config/api";
+// src/contexts/AuthContext.js
+import { createContext, useContext } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { loginUser, registerUser, fetchCurrentUser } from "../api/auth";
 import { useNavigate } from "react-router-dom";
+
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (token) {
-          api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-          const res = await api.get("/api/auth/me");
-          setUser(res.data);
-        }
-      } catch (err) {
-        localStorage.removeItem("token");
-      } finally {
-        setLoading(false);
-      }
-    };
-    checkAuth();
-  }, []);
-
-  const login = async (email, password) => {
-    try {
-      const res = await api.post("/api/auth/login", { email, password });
-      localStorage.setItem("token", res.data.token);
-      api.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`;
-      setUser(res.data.user);
-      navigate("/");
-    } catch (err) {
-      console.error(err);
-      // handle error, e.g., show toast
-    }
-  };
-
-  const register = async (username, email, password) => {
-    try {
-      await api.post("/api/auth/register", { username, email, password });
-      navigate("/login");
-    } catch (err) {
-      console.error(err);
-      // handle error
-    }
-  };
+  const token = localStorage.getItem("token");
 
   const logout = () => {
     localStorage.removeItem("token");
-    delete api.defaults.headers.common["Authorization"];
-    setUser(null);
+    queryClient.removeQueries({ queryKey: ["user"] });
     navigate("/login");
   };
 
+  const { data: user, isLoading } = useQuery({
+    queryKey: ["user"],
+    queryFn: fetchCurrentUser,
+    enabled: !!token,
+    retry: false,
+    onError: (err) => {
+      if (err?.response?.status === 401) {
+        logout(); 
+      }
+    },
+  });
+
+  const loginMutation = useMutation({
+    mutationFn: ({ email, password }) => {
+      
+      return loginUser(email, password);
+    },
+    onSuccess: (data) => {
+      localStorage.setItem("token", data.token);
+      queryClient.invalidateQueries(["user"]);
+      navigate("/");
+    },
+  });
+
+  const registerMutation = useMutation({
+    mutationFn: ({ username, email, password }) => {
+      
+      return registerUser(username, email, password);
+    },
+    onSuccess: () => {
+      navigate("/login");
+    },
+  });
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
-      {!loading && children}
+    <AuthContext.Provider
+      value={{
+        user,
+        loading: isLoading,
+        login: loginMutation.mutateAsync,
+        register: registerMutation.mutateAsync,
+        logout,
+      }}
+    >
+      {!isLoading && children}
     </AuthContext.Provider>
   );
 };

@@ -1,6 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
-import { AuthProvider, useAuth } from "./contexts/AuthContext";
-import { TasksProvider } from "./contexts/TasksContext";
+import { Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "./contexts/AuthContext";
 
 import Layout from "./components/Layout";
 import Login from "./pages/Login";
@@ -10,41 +9,38 @@ import Tasks from "./pages/Tasks";
 import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
 
-// Private Route Wrapper
+// ✅ Auth guard
 const PrivateRoute = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (loading) return <div>Loading...</div>; // prevent premature redirect
+
   return user ? <Outlet /> : <Navigate to="/login" />;
 };
 
 function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
 
-          {/* Private Routes */}
-          <Route element={<PrivateRoute />}>
-            <Route
-              element={
-                <TasksProvider>
-                  <Layout>
-                    <Outlet />
-                  </Layout>
-                </TasksProvider>
-              }
-            >
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/tasks" element={<Tasks />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/notifications" element={<Notifications />} />
-            </Route>
-          </Route>
-        </Routes>
-      </AuthProvider>
-    </BrowserRouter>
+      {/* Private Routes */}
+      <Route element={<PrivateRoute />}>
+        <Route
+          element={
+            <Layout>
+              <Outlet />
+            </Layout>
+          }
+        >
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/tasks" element={<Tasks />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/notifications" element={<Notifications />} />
+        </Route>
+      </Route>
+    </Routes>
   );
 }
 

@@ -4,7 +4,7 @@ import api from "../../config/api";
 const TaskForm = ({ onClose, onSubmit }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [status, setStatus] = useState("todo");
+  const [status, setStatus] = useState("pending");
   const [dueDate, setDueDate] = useState("");
   const [assignedTo, setAssignedTo] = useState("");
   const [teamMembers, setTeamMembers] = useState([]);
@@ -32,7 +32,7 @@ const TaskForm = ({ onClose, onSubmit }) => {
     onSubmit({ title, description, status, dueDate, assignedTo });
     setTitle("");
     setDescription("");
-    setStatus("todo");
+    setStatus("pending");
     setDueDate("");
     setAssignedTo("");
   };
@@ -68,9 +68,9 @@ const TaskForm = ({ onClose, onSubmit }) => {
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
-              <option value="todo">To Do</option>
-              <option value="inprogress">In Progress</option>
-              <option value="done">Done</option>
+              <option value="pending">Pending</option>
+              <option value="in-progress">In Progress</option>
+              <option value="completed">Done</option>
             </select>
           </div>
           <div className="mb-4">
