@@ -8,17 +8,28 @@ import Dashboard from "./pages/Dashboard";
 import Tasks from "./pages/Tasks";
 import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 // ✅ Auth guard
 const PrivateRoute = () => {
   const { user, loading } = useAuth();
 
-  if (loading) return <div>Loading...</div>; // prevent premature redirect
+  if (loading) {
+    // Let the route render but show a loader inside the layout
+    return (
+      <Layout>
+        <div className="flex justify-center items-center h-screen">Loading...</div>
+      </Layout>
+    );
+  }
 
   return user ? <Outlet /> : <Navigate to="/login" />;
 };
 
+
 function App() {
+   
   return (
     <Routes>
       {/* Public Routes */}

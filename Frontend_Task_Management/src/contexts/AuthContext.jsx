@@ -3,6 +3,7 @@ import { createContext, useContext } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { loginUser, registerUser, fetchCurrentUser } from "../api/auth";
 import { useNavigate } from "react-router-dom";
+import { handleSuccess } from "../components/ui/toastFun";
 
 
 const AuthContext = createContext();
@@ -39,7 +40,8 @@ export const AuthProvider = ({ children }) => {
     onSuccess: (data) => {
       localStorage.setItem("token", data.token);
       queryClient.invalidateQueries(["user"]);
-      navigate("/");
+      handleSuccess("Login Successful!");
+      navigate("/", { state: { showToast: true } });
     },
   });
 
@@ -48,9 +50,12 @@ export const AuthProvider = ({ children }) => {
       
       return registerUser(username, email, password);
     },
-    onSuccess: () => {
-      navigate("/login");
-    },
+    onSuccess: (data) => {
+      
+      handleSuccess("Registration Successful!");
+      navigate("/login", { state: { showToast: true } });
+    }
+    
   });
 
   return (
@@ -63,7 +68,7 @@ export const AuthProvider = ({ children }) => {
         logout,
       }}
     >
-      {!isLoading && children}
+      {children}
     </AuthContext.Provider>
   );
 };

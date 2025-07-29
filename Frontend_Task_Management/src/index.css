@@ -29,3 +29,13 @@
   border: 2px solid var(--scrollbar-track);
 }
 
+input:-webkit-autofill {
+  transition: background-color 9999s ease-in-out 0s;
+  -webkit-text-fill-color: #d1d5db !important; /* Tailwind's text-gray-300 */
+  caret-color: white;
+}
+
+.dark input:-webkit-autofill {
+  box-shadow: 0 0 0px 1000px #374151 inset !important; /* Tailwind's gray-700 */
+  -webkit-text-fill-color: #d1d5db !important; /* text-gray-300 */
+}

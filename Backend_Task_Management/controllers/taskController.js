@@ -4,19 +4,33 @@ const Notification = require("../models/Notification");
 // Create Task + Notify
 exports.createTask = async (req, res) => {
   try {
-    const { title, description, assignedTo, dueDate, priority, subtasks } = req.body;
+    const {
+      title,
+      description,
+      assignedTo,
+      status,
+      dueDate,
+      priority,
+      subtasks,
+    } = req.body;
+
+    if (!title) {
+      return res.status(400).json({ error: "Task title is required." });
+    }
 
     const task = await Task.create({
       title,
       description,
       assignedTo,
       dueDate,
+      status,
       priority,
       subtasks,
       createdBy: req.user.userId,
       team: req.team,
     });
 
+    // Create a notification for the assigned user
     if (assignedTo) {
       await Notification.create({
         user: assignedTo,
@@ -28,10 +42,11 @@ exports.createTask = async (req, res) => {
 
     res.status(201).json(task);
   } catch (err) {
-    
-    res.status(500).json({ msg: "Server error", error : err });
+    console.error("Error creating task:", err);
+    res.status(500).json({ error: "Something went wrong while creating the task." });
   }
 };
+
 
 // Get tasks assigned to the logged-in user
 exports.getAssignedTasks = async (req, res) => {
