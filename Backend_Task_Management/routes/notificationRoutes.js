@@ -17,7 +17,7 @@ router.use(authMiddleware); // protect all routes
 router.get('/', getMyNotifications);
 router.get('/unread-count', getUnreadCount); // ✅ Added
 router.put('/:id/read', markAsRead);
-router.put('/mark-all-read', markAllAsRead);
+router.patch('/mark-all-read', markAllAsRead);
 router.delete('/:id', deleteNotification);
 router.delete('/', deleteAllNotifications);
 
