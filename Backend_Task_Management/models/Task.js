@@ -35,7 +35,8 @@ const taskSchema = new mongoose.Schema({
     },
     team: {
         type: mongoose.Schema.Types.ObjectId,
-        ref:'Team'
+        ref:'Team',
+        required:true
     }
         
     

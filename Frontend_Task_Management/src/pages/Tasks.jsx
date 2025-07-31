@@ -19,7 +19,7 @@ const Tasks = () => {
         <h1 className="text-2xl font-bold">Team Tasks</h1>
         <button
           onClick={() => setShowForm(true)}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-all ease-in-out cursor-pointer hover:scale-105 shadow-xl"
         >
           Create Task
         </button>

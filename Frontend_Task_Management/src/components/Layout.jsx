@@ -6,19 +6,24 @@ const Layout = ({ children }) => {
   const { user, logout } = useAuth();
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Sidebar */}
-      <Sidebar />
-
-      <div className="flex-1 flex flex-col overflow-hidden">
+    <div className="flex flex-col h-screen bg-gray-50">
+      
+      
         {/* Navbar */}
         <Navbar />
 
-        {/* Main Content */}
-        <main className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="h-screen flex ">
+
+        <Sidebar />
+        <main className="flex-1 overflow-y-auto p-4 tasks-scrollbar bg-gray-100 dark:bg-gray-800 dark:text-white">
           {children}
         </main>
+          </div>
+        
+        
       </div>
+      
     </div>
   );
 };

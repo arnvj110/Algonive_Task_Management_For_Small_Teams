@@ -1,6 +1,6 @@
 const TaskCard = ({ task }) => {
   return (
-    <div className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow">
+    <div className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow dark:bg-gray-600 ">
       <div className="flex justify-between items-start">
         <h3 className="font-bold text-lg">{task.title}</h3>
         <span
@@ -17,7 +17,7 @@ const TaskCard = ({ task }) => {
       </div>
       <p className="text-gray-600 mt-2">{task.description}</p>
       <div className="mt-4 flex justify-between items-center">
-        <span className="text-sm text-gray-500">
+        <span className="text-sm text-gray-500 dark:text-gray-300">
           Due: {new Date(task.dueDate).toLocaleDateString()}
         </span>
         <span

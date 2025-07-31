@@ -19,7 +19,7 @@ const Dashboard = () => {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div>
+    <div className="">
       <h1 className="text-2xl font-bold mb-6">My Tasks</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {myTasks.length === 0 ? (

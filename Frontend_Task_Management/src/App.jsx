@@ -10,6 +10,8 @@ import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import TeamPage from "./pages/TeamPage";
+import Invites from "./pages/Invites";
 
 // ✅ Auth guard
 const PrivateRoute = () => {
@@ -49,6 +51,8 @@ function App() {
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/notifications" element={<Notifications />} />
+          <Route path="/team" element={<TeamPage />} />
+          <Route path="/invites" element={<Invites />} />
         </Route>
       </Route>
     </Routes>
