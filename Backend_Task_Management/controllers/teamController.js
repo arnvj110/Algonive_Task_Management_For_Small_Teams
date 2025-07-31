@@ -3,8 +3,8 @@ const User = require("../models/User");
 const Notification = require("../models/Notification");
 
 // Create a new team
-// Create a new team
-exports.createTeam = async (req, res) => {
+
+const createTeam = async (req, res) => {
     try {
         console.log(req.body);
         const { name } = req.body;
@@ -50,7 +50,7 @@ exports.createTeam = async (req, res) => {
 
 
 // Get current user's team details
-exports.getMyTeam = async (req, res) => {
+const getMyTeam = async (req, res) => {
     try {
         const team = await Team.findOne({ members: req.user.userId })
             .populate("members", "username email")
@@ -65,7 +65,7 @@ exports.getMyTeam = async (req, res) => {
 };
 
 // Invite a user to the team
-exports.inviteToTeam = async (req, res) => {
+const inviteToTeam = async (req, res) => {
     try {
         const { email } = req.body;
         
@@ -116,7 +116,7 @@ exports.inviteToTeam = async (req, res) => {
 
 // Join a team (based on invite)
 // Join a specific team by ID
-exports.joinTeam = async (req, res) => {
+const joinTeam = async (req, res) => {
   try {
     const user = req.user;
     const { teamId } = req.body;
@@ -185,7 +185,7 @@ exports.joinTeam = async (req, res) => {
 };
 
 // Leave a team
-exports.leaveTeam = async (req, res) => {
+const leaveTeam = async (req, res) => {
     try {
         const user = req.user;
 
@@ -225,7 +225,7 @@ exports.leaveTeam = async (req, res) => {
     }
 };
 
-exports.getMyInvites = async (req, res) => {
+const getMyInvites = async (req, res) => {
     try {
         const user = await User.findById(req.user.userId);
         const teams = await Team.find({ "pendingInvites.email": user.email }).select("name");
@@ -237,7 +237,7 @@ exports.getMyInvites = async (req, res) => {
 };
 
 // GET /api/team/invites
-exports.getPendingInvites = async (req, res) => {
+const getPendingInvites = async (req, res) => {
     try {
         const teams = await Team.find({ "pendingInvites.email": req.user.email })
             .select("name owner")
@@ -250,7 +250,7 @@ exports.getPendingInvites = async (req, res) => {
 };
 
 // Reject an invitation to a team
-exports.rejectInvite = async (req, res) => {
+const rejectInvite = async (req, res) => {
   try {
     const user = req.user;
     const { teamId } = req.body;
@@ -289,3 +289,14 @@ exports.rejectInvite = async (req, res) => {
     res.status(500).json({ error: "Server error", detail: error.message });
   }
 };
+
+module.exports = {
+    createTeam,
+    getMyTeam,
+    inviteToTeam,
+    joinTeam,
+    leaveTeam,
+    getMyInvites,
+    getPendingInvites,
+    rejectInvite,
+}

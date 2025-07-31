@@ -15,7 +15,7 @@ const authMiddleware = require('../middlewares/authMiddleware');
 router.use(authMiddleware); // protect all routes
 
 router.get('/', getMyNotifications);
-router.get('/unread-count', getUnreadCount); // ✅ Added
+router.get('/unread-count', getUnreadCount); 
 router.put('/:id/read', markAsRead);
 router.patch('/mark-all-read', markAllAsRead);
 router.delete('/:id', deleteNotification);

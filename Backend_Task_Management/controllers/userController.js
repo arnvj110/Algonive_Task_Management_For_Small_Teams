@@ -1,6 +1,6 @@
 const User = require("../models/User");
 
-exports.getTeamUsers = async (req, res) => {
+const getTeamUsers = async (req, res) => {
   try {
     const users = await User.find({ team: req.team }).select('-password');
     res.json(users);
@@ -11,7 +11,7 @@ exports.getTeamUsers = async (req, res) => {
 };
 
 
-exports.getCurrentUser = async (req, res) => {
+const getCurrentUser = async (req, res) => {
   try {
     
     // Assuming authMiddleware sets req.user.userId
@@ -25,3 +25,8 @@ exports.getCurrentUser = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+module.exports = {
+  getTeamUsers,
+  getCurrentUser,
+}

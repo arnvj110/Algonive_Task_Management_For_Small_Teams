@@ -2,7 +2,7 @@ const Task = require("../models/Task");
 const Notification = require("../models/Notification");
 
 // Create Task + Notify
-exports.createTask = async (req, res) => {
+const createTask = async (req, res) => {
   try {
     const {
       title,
@@ -50,7 +50,7 @@ exports.createTask = async (req, res) => {
 
 
 // Get tasks assigned to the logged-in user
-exports.getAssignedTasks = async (req, res) => {
+const getAssignedTasks = async (req, res) => {
   
   try {
     // Extract the user ID (adjust to your auth middleware's user object)
@@ -65,7 +65,7 @@ exports.getAssignedTasks = async (req, res) => {
 
 
 // Get all tasks for the user's team
-exports.getTeamTasks = async (req, res) => {
+const getTeamTasks = async (req, res) => {
   
   try {
     const tasks = await Task.find({ team: req.user.team });
@@ -77,7 +77,7 @@ exports.getTeamTasks = async (req, res) => {
 };
 
 // Update task details or status
-exports.updateTask = async (req, res) => {
+const updateTask = async (req, res) => {
   try {
     const task = await Task.findOneAndUpdate(
       { _id: req.params.id },
@@ -96,8 +96,8 @@ exports.updateTask = async (req, res) => {
   }
 };
 
-// Optionally add deleteTask if used in your routes
-exports.deleteTask = async (req, res) => {
+// deleteTask
+const deleteTask = async (req, res) => {
   try {
     const task = await Task.findOneAndDelete({ _id: req.params.id });
 
@@ -111,3 +111,11 @@ exports.deleteTask = async (req, res) => {
     res.status(500).json({ msg: "Server error", error: err });
   }
 };
+
+module.exports = {
+  createTask,
+  getAssignedTasks,
+  getTeamTasks,
+  updateTask,
+  deleteTask
+}

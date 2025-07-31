@@ -5,8 +5,7 @@ const { signupValidation, loginValidation } = require('../middlewares/validateAu
 const router = express.Router();
 
 
-
-
+// Routes
 router.post('/register', signupValidation, register);
 router.post('/login', loginValidation, login);
 
