@@ -10,8 +10,14 @@ const TeamPage = () => {
   const inviteMutation = useInviteToTeam();
   const leaveMutation = useLeaveTeam();
 
-  if (isLoading) return <p>Loading team...</p>;
-  if (error) return <p>Error loading team: {error.message}</p>;
+  if (isLoading) return <p className="text-center">Loading team...</p>;
+  if (error?.message === "Team not found") {
+  return <p className="text-red-500">You are not in a team yet.</p>;
+}
+
+if (error) {
+  return <p className="text-red-500">Error: {error.message}</p>;
+}
 
   const members = team?.team?.members || [];
   const ownerId = team.team.owner._id;
@@ -19,8 +25,8 @@ const TeamPage = () => {
 
   const handleInvite = (e) => {
     e.preventDefault();
-    if (!email) return;
-    inviteMutation.mutate({ email });
+    if (!email.trim()) return;
+    inviteMutation.mutate({ email: email.trim() });
     setEmail("");
   };
 
@@ -32,6 +38,7 @@ const TeamPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-4">
+      {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Team Members</h1>
         {!isOwner && (
@@ -45,11 +52,9 @@ const TeamPage = () => {
         )}
       </div>
 
+      {/* Invite Form */}
       {isOwner && (
-        <form
-          onSubmit={handleInvite}
-          className="flex flex-col sm:flex-row gap-2 mb-8"
-        >
+        <form onSubmit={handleInvite} className="flex flex-col sm:flex-row gap-2 mb-8">
           <input
             type="email"
             placeholder="Invite by email"
@@ -63,11 +68,12 @@ const TeamPage = () => {
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
             disabled={inviteMutation.isPending}
           >
-            Invite
+            {inviteMutation.isPending ? "Inviting..." : "Invite"}
           </button>
         </form>
       )}
 
+      {/* Members Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {members.map((member) => {
           const isOwnerMember = member._id === ownerId;
@@ -76,19 +82,19 @@ const TeamPage = () => {
           return (
             <div
               key={member._id}
-              className={`p-4 rounded-xl shadow-xl border ${
+              className={`p-4 rounded-xl shadow-md border ${
                 isOwnerMember
                   ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
-                  : "bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-700"
+                  : "bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600"
               }`}
             >
-              <h2 className="text-xl font-bold capitalize flex gap-2 text-gray-900 dark:text-white items-center">
+              <h2 className="text-xl font-bold flex gap-2 items-center text-gray-900 dark:text-white capitalize">
                 {member.username}
                 {isCurrentUser && (
-                  <span className="text-sm font-normal text-gray-500 dark:text-gray-300">(You)</span>
+                  <span className="text-sm text-gray-500 dark:text-gray-300">(You)</span>
                 )}
                 {isOwnerMember && (
-                  <span className="text-sm font-normal text-blue-700 dark:text-blue-300">(Owner)</span>
+                  <span className="text-sm text-blue-700 dark:text-blue-300">(Owner)</span>
                 )}
               </h2>
               <p className="text-gray-700 dark:text-gray-300">{member.email}</p>

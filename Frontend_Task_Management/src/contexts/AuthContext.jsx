@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
     },
     onSuccess: (data) => {
       
-      handleSuccess("Registration Successful!");
+      
       navigate("/login", { state: { showToast: true } });
     }
     

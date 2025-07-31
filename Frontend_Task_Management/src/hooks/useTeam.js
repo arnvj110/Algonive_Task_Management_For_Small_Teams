@@ -8,14 +8,20 @@ import {
   getMyInvites,
   rejectInvite,
 } from "../api/team";
+import { handleSuccess } from "../components/ui/toastFun";
 
 // Get current user's team
+
+
+
 export const useMyTeam = () => {
   return useQuery({
-    queryKey: ["myTeam"],
+    queryKey: ["team"],
     queryFn: getMyTeam,
+    retry: false, // prevent refetch loop if 404
   });
 };
+
 
 // Create a team
 export const useCreateTeam = () => {
@@ -35,8 +41,13 @@ export const useInviteToTeam = () => {
 
   return useMutation({
     mutationFn: inviteToTeam,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      
       queryClient.invalidateQueries(["myTeam"]);
+      handleSuccess(data.message);
+    },
+    onError: (error) => {
+      console.error("Invite failed:", error?.response?.data || error.message);
     },
   });
 };

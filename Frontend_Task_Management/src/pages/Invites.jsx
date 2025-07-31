@@ -3,6 +3,7 @@ import { useJoinTeam, useMyInvites, useRejectInvites } from "../hooks/useTeam";
 
 const Invites = () => {
   const { data, isLoading, error } = useMyInvites();
+  
   const invites = data?.invites ?? [];
 
   const acceptMutation = useJoinTeam();
@@ -30,7 +31,7 @@ const Invites = () => {
                 {invite.teamName}
               </h2>
               <p className="text-gray-600 dark:text-gray-300 mb-2">
-                Invited by: <strong>{invite.invitedBy.username}</strong>
+                Invited by: <strong>{invite.name}</strong>
               </p>
 
               <div className="flex gap-4">

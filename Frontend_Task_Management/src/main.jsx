@@ -15,7 +15,7 @@ import { ThemeProvider } from "./contexts/ThemeContext.jsx";
 import { ToastContainer } from "react-toastify";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+  
     
     <QueryClientProvider client={queryClient}>
       <BrowserRouter> 
@@ -31,5 +31,5 @@ createRoot(document.getElementById("root")).render(
       </BrowserRouter>
       
     </QueryClientProvider>
-  </StrictMode>
+  
 );

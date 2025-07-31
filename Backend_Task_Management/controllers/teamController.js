@@ -66,6 +66,7 @@ exports.getMyTeam = async (req, res) => {
 exports.inviteToTeam = async (req, res) => {
     try {
         const { email } = req.body;
+        
         const team = await Team.findOne({ owner: req.user.userId });
 
         if (!team) return res.status(403).json({ error: "You don't own a team!" });
@@ -102,9 +103,10 @@ exports.inviteToTeam = async (req, res) => {
         }
 
         await Notification.insertMany(notifications);
-
-        res.status(200).json({ message: "Invitation sent" });
+        
+        res.status(200).json({ message: "Invitation sent!" });
     } catch (error) {
+        
         res.status(500).json({ error: "Server error", error: error.message });
     }
 };

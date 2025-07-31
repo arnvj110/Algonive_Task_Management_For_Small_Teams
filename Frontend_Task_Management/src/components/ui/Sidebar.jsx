@@ -5,9 +5,9 @@ const Sidebar = () => {
     Dashboard: "/",
     Tasks: "/tasks",
     Notifications: "/notifications",
-    Profile: "/profile",
     Team: "/team",
-    invites: "/invites",
+    Invites: "/invites",
+    Profile: "/profile",
   };
 
   return (

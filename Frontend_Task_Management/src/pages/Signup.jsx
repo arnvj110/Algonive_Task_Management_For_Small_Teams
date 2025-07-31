@@ -38,7 +38,7 @@ const Signup = () => {
       setError("");
       setLoading(true);
       await register({ username, email, password });
-      handleSuccess("Account created successfully!");
+     
       setTimeout(() => {
         navigate("/login");
       }, 2000);

@@ -8,19 +8,32 @@ export const createTeam = async (name) => {
 
 // Get current user's team
 export const getMyTeam = async () => {
-  const res = await api.get("/api/teams/my");
-  return res.data;
+  try {
+    const res = await api.get("/api/teams/my");
+    return res.data;
+  } catch (err) {
+    const errorMessage = err.response?.data?.error || "Failed to fetch team.";
+    throw new Error(errorMessage);
+  }
 };
 
+
 // Invite a user to team
+
 export const inviteToTeam = async (email) => {
-  const res = await api.post("/api/teams/invite", { email });
-  return res.data;
+  try {
+    const res = await api.post("/api/teams/invite", email );
+    return res.data;
+  } catch (err) {
+    console.error("Invite failed", err.response?.data || err.message);
+    throw err;
+  }
 };
+
 
 // Join a specific team
 export const joinTeam = async (teamId) => {
-  const res = await api.post("/api/teams/join", { teamId });
+  const res = await api.post("/api/teams/join",  teamId );
   return res.data;
 };
 
