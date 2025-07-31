@@ -6,7 +6,9 @@ const Notification = require("../models/Notification");
 // Create a new team
 exports.createTeam = async (req, res) => {
     try {
+        console.log(req.body);
         const { name } = req.body;
+
 
         // Check if team already exists
         const existingTeam = await Team.findOne({ name });

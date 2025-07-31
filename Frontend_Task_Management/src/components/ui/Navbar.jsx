@@ -34,7 +34,11 @@ const Navbar = () => {
 
           </NavLink>
 
-          <span className="font-bold capitalize">{user?.username}</span>
+            <NavLink to={'/profile'}>
+          <span className="font-bold capitalize hover:underline">
+              {user?.username}
+              </span>
+              </NavLink>
           <button
             onClick={logout}
             className="text-gray-600 bg-red-500 p-2 text-white rounded-md transition duration-300 ease-in-out cursor-pointer hover:scale-105 font-semibold shadow-xl"

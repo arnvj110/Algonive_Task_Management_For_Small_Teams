@@ -1,9 +1,16 @@
+import { handleError } from "../components/ui/toastFun";
 import api from "../config/api";
 
 // Create a new team
 export const createTeam = async (name) => {
-  const res = await api.post("/api/teams", { name });
-  return res.data;
+  try {
+
+    const res = await api.post("/api/teams/create",  name );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    handleError(error?.response?.data?.error);
+  }
 };
 
 // Get current user's team
@@ -13,6 +20,7 @@ export const getMyTeam = async () => {
     return res.data;
   } catch (err) {
     const errorMessage = err.response?.data?.error || "Failed to fetch team.";
+    handleError(errorMessage);
     throw new Error(errorMessage);
   }
 };

@@ -13,7 +13,7 @@ const Invites = () => {
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
 
   return (
-    <div className="max-w-3xl mx-auto p-4">
+    <div className="max-w-3xl mx-auto p-4 flex flex-col items-center ">
       <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
         Pending Invites
       </h1>

@@ -26,8 +26,9 @@ const Tasks = () => {
       </div>
 
       {showForm && (
-        <TaskForm onClose={() => setShowForm(false)} onSubmit={handleCreateTask} />
-      )}
+  <TaskForm onClose={() => setShowForm(false)} onSubmit={handleCreateTask} />
+)}
+
 
       {loading ? (
         <div>Loading tasks...</div>

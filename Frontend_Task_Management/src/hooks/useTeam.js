@@ -10,15 +10,17 @@ import {
 } from "../api/team";
 import { handleSuccess } from "../components/ui/toastFun";
 
+
 // Get current user's team
 
 
 
-export const useMyTeam = () => {
+export const useMyTeam = (options={}) => {
   return useQuery({
-    queryKey: ["team"],
+    queryKey: ["myTeam"],
     queryFn: getMyTeam,
-    retry: false, // prevent refetch loop if 404
+    retry: false,
+    ...options,
   });
 };
 
@@ -31,6 +33,7 @@ export const useCreateTeam = () => {
     mutationFn: createTeam,
     onSuccess: () => {
       queryClient.invalidateQueries(["myTeam"]);
+      handleSuccess("Team created successfully!");
     },
   });
 };

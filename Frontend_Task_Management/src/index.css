@@ -31,7 +31,7 @@
 
 input:-webkit-autofill {
   transition: background-color 9999s ease-in-out 0s;
-  -webkit-text-fill-color: #d1d5db !important; /* Tailwind's text-gray-300 */
+  -webkit-text-fill-color: black !important; /* Tailwind's text-gray-300 */
   caret-color: white;
 }
 

@@ -12,6 +12,7 @@ exports.createTask = async (req, res) => {
       dueDate,
       priority,
       subtasks,
+      team
     } = req.body;
 
     if (!title) {
@@ -27,7 +28,7 @@ exports.createTask = async (req, res) => {
       priority,
       subtasks,
       createdBy: req.user.userId,
-      team: req.team,
+      team: team,
     });
 
     // Create a notification for the assigned user
@@ -65,8 +66,9 @@ exports.getAssignedTasks = async (req, res) => {
 
 // Get all tasks for the user's team
 exports.getTeamTasks = async (req, res) => {
+  
   try {
-    const tasks = await Task.find({ team: req.team });
+    const tasks = await Task.find({ team: req.user.team });
     res.json(tasks);
   } catch (err) {
     

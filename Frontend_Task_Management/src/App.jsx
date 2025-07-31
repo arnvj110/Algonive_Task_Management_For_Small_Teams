@@ -29,6 +29,16 @@ const PrivateRoute = () => {
   return user ? <Outlet /> : <Navigate to="/login" />;
 };
 
+const RequireTeam = ({ children }) => {
+  const { user } = useAuth();
+
+  if (!user?.team) {
+    return <Navigate to="/team" replace />;
+  }
+
+  return children;
+};
+
 
 function App() {
    
@@ -47,8 +57,20 @@ function App() {
             </Layout>
           }
         >
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/tasks" element={<Tasks />} />
+          <Route path="/" element={
+            <RequireTeam>
+
+              <Dashboard />
+            </RequireTeam>
+            
+            } />
+          <Route path="/tasks" element={
+            <RequireTeam>
+
+              <Tasks />
+            </RequireTeam>
+            
+            } />
           <Route path="/profile" element={<Profile />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/team" element={<TeamPage />} />
