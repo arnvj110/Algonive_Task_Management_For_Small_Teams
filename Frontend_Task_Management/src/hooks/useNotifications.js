@@ -4,7 +4,9 @@ import {
   markNotificationAsRead,
   markAllNotificationsAsRead,
   deleteNotification,
+  deleteAllNotifications
 } from "../api/notifications";
+
 
 export const useNotifications = () => {
   const token = localStorage.getItem("token");
@@ -42,3 +44,11 @@ export const useDeleteNotification = () => {
     onSuccess: () => queryClient.invalidateQueries(["notifications"]),
   });
 };
+
+export const useAllDeleteNotification = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteAllNotifications,
+    onSuccess: () => queryClient.invalidateQueries(["notifications"]),
+  });
+}

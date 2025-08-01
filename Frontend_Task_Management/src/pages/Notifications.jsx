@@ -3,6 +3,7 @@ import {
   useMarkAsRead,
   useMarkAllAsRead,
   useDeleteNotification,
+  useAllDeleteNotification,
 } from "../hooks/useNotifications";
 import { Bell, CheckCircle, AlertTriangle } from "lucide-react";
 
@@ -11,6 +12,7 @@ const Notifications = () => {
   const { mutate: markAsRead } = useMarkAsRead();
   const { mutate: markAllAsRead } = useMarkAllAsRead();
   const { mutate: deleteNotification } = useDeleteNotification();
+  const { mutate: deleteAllNotifications } = useAllDeleteNotification();
 
   if (isLoading) return <div className="text-center p-8">Loading...</div>;
   if (isError) return <div className="text-center text-red-600">Failed to load notifications</div>;
@@ -20,6 +22,7 @@ const Notifications = () => {
       <div className="bg-white dark:bg-gray-700 rounded-lg shadow">
         <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-600 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Notifications</h1>
+          <div>
           {notifications.some(n => !n.read) && (
             <button
               onClick={() => markAllAsRead()}
@@ -28,6 +31,16 @@ const Notifications = () => {
               Mark all as read
             </button>
           )}
+          {
+            notifications.length > 0 && <button
+                        className="text-xs text-red-600 hover:underline dark:text-red-400
+                        cursor-pointer"
+                        onClick={() => deleteAllNotifications()}
+                      >
+                        Delete All
+                      </button>
+          }
+          </div>
         </div>
 
         <div className="divide-y divide-gray-200 dark:divide-gray-600">

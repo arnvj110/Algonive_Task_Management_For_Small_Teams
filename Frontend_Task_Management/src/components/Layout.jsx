@@ -1,21 +1,22 @@
+import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import Navbar from "./ui/Navbar";
 import Sidebar from "./ui/Sidebar";
 
 const Layout = ({ children }) => {
   const { user, logout } = useAuth();
-
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <div className="flex flex-col h-screen bg-gray-50">
       
       
         {/* Navbar */}
-        <Navbar />
+        <Navbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <div className="h-screen flex ">
 
-        <Sidebar />
+        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         <main className="flex-1 overflow-y-auto p-4 tasks-scrollbar bg-gray-100 dark:bg-gray-800 dark:text-white">
           {children}
         </main>

@@ -1,8 +1,9 @@
 import { useTasks } from "../contexts/TasksContext";
-import TaskCard from "../components/tasks/TaskCard";
+
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { handleSuccess } from "../components/ui/toastFun";
+import TaskDiv from "../components/tasks/TaskDiv";
 
 const Dashboard = () => {
   const { myTasks, loading } = useTasks();
@@ -19,13 +20,16 @@ const Dashboard = () => {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="">
+    <div className=" flex flex-col items-center">
       <h1 className="text-2xl font-bold mb-6">My Tasks</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-[85%] gap-4 p-4 ">
         {myTasks.length === 0 ? (
           <p>No tasks assigned to you.</p>
         ) : (
-          myTasks.map((task) => <TaskCard key={task._id} task={task} />)
+          myTasks.map((task) => 
+          
+          <TaskDiv key={task._id} task={task} />
+        )
         )}
       </div>
     </div>
