@@ -33,36 +33,35 @@ export const AuthProvider = ({ children }) => {
   });
 
   const loginMutation = useMutation({
-    mutationFn: ({ email, password }) => {
-      
-      return loginUser(email, password);
-    },
+    mutationFn: ({ email, password }) => loginUser(email, password),
     onSuccess: (data) => {
       localStorage.setItem("token", data.token);
       queryClient.invalidateQueries(["user"]);
       handleSuccess("Login Successful!");
-      navigate("/", { state: { showToast: true } });
+      navigate("/");
     },
+    onError: (error) => {
+      // Convert to a format your Login component expects
+      throw new Error(error.response?.data?.message || "Login failed");
+    }
   });
 
   const registerMutation = useMutation({
-    mutationFn: ({ username, email, password }) => {
-      
-      return registerUser(username, email, password);
-    },
-    onSuccess: (data) => {
-      
-      
+    mutationFn: ({ username, email, password }) => 
+      registerUser(username, email, password),
+    onSuccess: () => {
       navigate("/login", { state: { showToast: true } });
+    },
+    onError: (error) => {
+      throw new Error(error.response?.data?.message || "Registration failed");
     }
-    
   });
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        loading: isLoading,
+        loading: isLoading || loginMutation.isLoading,
         login: loginMutation.mutateAsync,
         register: registerMutation.mutateAsync,
         logout,

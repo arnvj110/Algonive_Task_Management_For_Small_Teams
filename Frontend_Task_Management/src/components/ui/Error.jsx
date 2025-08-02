@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Error = ({ message }) => {
-  console.log("Error component received:", message);
+  
 
   const displayMessage =
     typeof message === 'string'

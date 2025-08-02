@@ -8,7 +8,7 @@ export const createTeam = async (name) => {
     const res = await api.post("/api/teams/create",  name );
     return res.data;
   } catch (error) {
-    console.log(error);
+    
     handleError(error?.response?.data?.error);
   }
 };

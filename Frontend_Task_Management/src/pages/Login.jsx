@@ -31,7 +31,7 @@ const Login = () => {
       
     } catch (err) {
 
-      console.log(err);
+      
       setError("Invalid email or password");
 
     }
@@ -45,7 +45,7 @@ const Login = () => {
       </div>
       <div className="bg-white dark:bg-gray-700 p-8 rounded-xl shadow-xl transition duration-300 ease-in-out w-full max-w-md ">
         <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
-        {error && <Error message={error} />}
+        {error && <Error message={error? error : "Error"} />}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700 dark:text-gray-400 mb-2" htmlFor="email">
