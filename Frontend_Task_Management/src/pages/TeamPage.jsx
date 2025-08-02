@@ -152,7 +152,7 @@ const TeamPage = () => {
       
         <div className="text-center">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-          <p className="text-red-500 text-lg">Error: {error.message}</p>
+          <p className="text-red-500 text-lg">Error: {error?.message}</p>
         </div>
       
     );

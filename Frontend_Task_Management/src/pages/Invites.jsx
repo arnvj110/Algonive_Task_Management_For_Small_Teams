@@ -35,7 +35,7 @@ const Invites = () => {
       <div className="min-h-screen bg-gray-50 dark:bg-gray-800 flex items-center justify-center p-4">
         <div className="text-center">
           <AlertCircle className="w-12 h-12 text-red-500 dark:text-red-400 mx-auto mb-4" />
-          <p className="text-red-500 dark:text-red-400 text-lg">Error: {error.message}</p>
+          <p className="text-red-500 dark:text-red-400 text-lg">Error: {error?.message}</p>
         </div>
       </div>
     );
