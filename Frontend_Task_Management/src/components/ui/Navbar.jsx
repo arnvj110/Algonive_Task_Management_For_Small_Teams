@@ -71,7 +71,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
           {/* Logout */}
           <button
             onClick={logout}
-            className="bg-red-500 text-white px-3 py-1 rounded-md hover:scale-105 transition-transform font-semibold shadow"
+            className="bg-red-500 text-white px-3 py-1 rounded-md hover:scale-105 transition-transform font-semibold  cursor-pointer"
           >
             Logout
           </button>

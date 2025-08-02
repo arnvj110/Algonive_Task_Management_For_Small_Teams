@@ -8,8 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import Tasks from "./pages/Tasks";
 import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+
 import TeamPage from "./pages/TeamPage";
 import Invites from "./pages/Invites";
 

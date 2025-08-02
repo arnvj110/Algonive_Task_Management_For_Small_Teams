@@ -29,3 +29,21 @@ export const fetchCurrentUser = async () => {
   
   return response.data;
 };
+
+export const fetchUserById = async (id) => {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("No token found");
+  let response;
+  try{
+    response = await api.get(`/api/users/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  }catch(err){
+    console.log(err);
+  }
+  
+
+  return response.data;
+}

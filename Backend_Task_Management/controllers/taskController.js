@@ -1,5 +1,6 @@
 const Task = require("../models/Task");
 const Notification = require("../models/Notification");
+const User = require("../models/User");
 
 // Create Task + Notify
 const createTask = async (req, res) => {
@@ -51,7 +52,7 @@ const createTask = async (req, res) => {
 
 // Get tasks assigned to the logged-in user
 const getAssignedTasks = async (req, res) => {
-  
+
   try {
     // Extract the user ID (adjust to your auth middleware's user object)
     const userId = req.user.userId || req.user._id;
@@ -66,12 +67,16 @@ const getAssignedTasks = async (req, res) => {
 
 // Get all tasks for the user's team
 const getTeamTasks = async (req, res) => {
-  
+
   try {
-    const tasks = await Task.find({ team: req.user.team });
-    res.json(tasks);
+    const userTeam = await User.findById(req.user.userId);
+
+
+    const tasks = await Task.find({ team: userTeam.team });
+
+    res.status(200).json(tasks);
   } catch (err) {
-    
+
     res.status(500).json({ msg: "Server error", error: err });
   }
 };
@@ -89,12 +94,43 @@ const updateTask = async (req, res) => {
       return res.status(404).json({ msg: "Task not found" });
     }
 
-    res.json(task);
+    // 🔔 Send notification after status update
+    if (req.body.status) {
+      const assignedTo = task.assignedTo?.toString();
+      const createdBy = task.createdBy?.toString();
+      const statusLabel = req.body.status.charAt(0).toUpperCase() + req.body.status.slice(1);
+      const message = `Task "${task.title}" status updated to "${statusLabel}".`;
+
+      if (assignedTo === createdBy) {
+        await Notification.create({
+          user: assignedTo,
+          task: task._id,
+          type: "statusUpdate",
+          message,
+        });
+      } else {
+        await Notification.create({
+          user: assignedTo,
+          task: task._id,
+          type: "statusUpdate",
+          message,
+        });
+
+        await Notification.create({
+          user: createdBy,
+          task: task._id,
+          type: "statusUpdate",
+          message,
+        });
+      }
+    }
+
+    res.status(200).json(task);
   } catch (err) {
-    
     res.status(500).json({ msg: "Server error", error: err });
   }
 };
+
 
 // deleteTask
 const deleteTask = async (req, res) => {
@@ -105,17 +141,20 @@ const deleteTask = async (req, res) => {
       return res.status(404).json({ msg: "Task not found" });
     }
 
-    res.json({ msg: "Task deleted successfully" });
+    res.status(200).json({ msg: "Task deleted successfully" });
   } catch (err) {
-    
+
     res.status(500).json({ msg: "Server error", error: err });
   }
 };
+
+
 
 module.exports = {
   createTask,
   getAssignedTasks,
   getTeamTasks,
   updateTask,
-  deleteTask
+  deleteTask,
+
 }

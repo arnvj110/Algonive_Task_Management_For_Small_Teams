@@ -18,15 +18,15 @@ const Notifications = () => {
   if (isError) return <div className="text-center text-red-600">Failed to load notifications</div>;
 
   return (
-    <div className="max-w-4xl mx-auto my-5">
-      <div className="bg-white dark:bg-gray-700 rounded-lg shadow">
-        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-600 flex justify-between items-center">
+    <div className="max-w-4xl mx-auto my-5 max-h-[80%] ">
+      <div className="bg-white dark:bg-gray-700 rounded-lg shadow  ">
+        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-600 flex justify-between items-center ">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Notifications</h1>
-          <div>
+          <div className="">
           {notifications.some(n => !n.read) && (
             <button
               onClick={() => markAllAsRead()}
-              className="px-4 py-2 text-sm text-blue-600 hover:underline dark:text-blue-400"
+              className="px-4 py-2 text-sm text-blue-600 hover:underline dark:text-blue-400 cursor-pointer"
             >
               Mark all as read
             </button>
@@ -43,7 +43,7 @@ const Notifications = () => {
           </div>
         </div>
 
-        <div className="divide-y divide-gray-200 dark:divide-gray-600">
+        <div className="divide-y divide-gray-200 dark:divide-gray-600  max-h-[500px] overflow-y-scroll tasks-scrollbar">
           {notifications.length === 0 ? (
             <div className="p-8 text-center text-gray-600 dark:text-gray-300">
               You're all caught up!

@@ -1,23 +1,28 @@
 
 import { useState, useEffect } from "react";
 import { Menu, Home, CheckSquare, Bell, Users, Mail, User } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
+  const location = useLocation();
   const [isMobile, setIsMobile] = useState(false);
-  const [activeItem, setActiveItem] = useState("/");
-
+  const [activeItem, setActiveItem] = useState(location.pathname);
   // Check screen size and update mobile state
   useEffect(() => {
     const checkScreenSize = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
     };
-
+    
+    
     checkScreenSize();
     window.addEventListener('resize', checkScreenSize);
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
+
+  useEffect(() => {
+    setActiveItem(location.pathname);
+  },[location.pathname])
 
   const pages = [
     { label: "Dashboard", path: "/", icon: Home },
@@ -87,7 +92,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           {pages.map(({ label, path, icon: Icon }) => {
             const isActive = activeItem === path;
             return (
-              <NavLink to={path} >
+              <NavLink key={path} to={path} >
               <button
                 key={path}
                 onClick={() => handleLinkClick(path)}

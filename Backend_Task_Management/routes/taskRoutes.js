@@ -6,7 +6,8 @@ const {
   getAssignedTasks,
   getTeamTasks,
   deleteTask,
-  updateTask
+  updateTask,
+  updateTaskStatus
 } = require('../controllers/taskController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
@@ -25,5 +26,7 @@ router.get('/team-tasks', getTeamTasks);
 router.delete('/:id', deleteTask);
 
 router.put('/:id', updateTask);
+
+
 
 module.exports = router;

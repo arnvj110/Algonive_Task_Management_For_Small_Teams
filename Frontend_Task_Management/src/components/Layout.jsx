@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
+
 import Navbar from "./ui/Navbar";
 import Sidebar from "./ui/Sidebar";
 
 const Layout = ({ children }) => {
-  const { user, logout } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   return (
     <div className="flex flex-col h-screen bg-gray-50">
       

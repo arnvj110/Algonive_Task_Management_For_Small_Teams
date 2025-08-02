@@ -52,7 +52,7 @@ const login = async (req, res) => {
                 username: user.username,
                 userId: user._id, 
                 email: user.email,
-                team: user.team
+                team: user.team ? user.team : null
             },
             JWT_SECRET,
             { expiresIn: '7d' }

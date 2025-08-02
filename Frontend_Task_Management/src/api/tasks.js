@@ -16,3 +16,22 @@ export const createTask = async (taskData) => {
   return res.data;
 };
 
+export const updateTaskApi = async (taskId, updatedTaskData) => {
+  try {
+    const res = await api.put(`/api/tasks/${taskId}`, updatedTaskData);
+    return res.data;
+  } catch (error) {
+    console.error("Error updating task:", error);
+    throw error;
+  }
+}
+
+export const deleteTaskApi = async (taskId) => {
+  try {
+    const res = await api.delete(`/api/tasks/${taskId}`);
+    return res.data; // Return the response data
+  } catch (error) {
+    console.error("Error deleting task:", error);
+    throw error;
+  }
+};

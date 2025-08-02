@@ -6,7 +6,7 @@ const Notification = require("../models/Notification");
 
 const createTeam = async (req, res) => {
     try {
-        console.log(req.body);
+        
         const { name } = req.body;
 
 
@@ -289,6 +289,8 @@ const rejectInvite = async (req, res) => {
     res.status(500).json({ error: "Server error", detail: error.message });
   }
 };
+
+
 
 module.exports = {
     createTeam,
