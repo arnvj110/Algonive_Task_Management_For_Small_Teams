@@ -135,18 +135,54 @@ const updateTask = async (req, res) => {
 // deleteTask
 const deleteTask = async (req, res) => {
   try {
-    const task = await Task.findOneAndDelete({ _id: req.params.id });
+    const task = await Task.findById(req.params.id);
 
     if (!task) {
       return res.status(404).json({ msg: "Task not found" });
     }
 
-    res.status(200).json({ msg: "Task deleted successfully" });
-  } catch (err) {
+    // Check if the user deleting the task is the creator
+    if (task.createdBy.toString() !== req.user.userId) {
+      return res.status(403).json({ msg: "You are not authorized to delete this task" });
+    }
 
-    res.status(500).json({ msg: "Server error", error: err });
+    // Delete the task
+    await Task.findByIdAndDelete(req.params.id);
+
+    // Prepare notification message
+    const message = `The task "${task.title}" has been deleted.`;
+
+    // Send notification to assigned user and creator (avoid duplicate if same)
+    const notifiedUsers = new Set();
+
+    // Notify assignedTo
+    if (task.assignedTo && task.assignedTo.toString() !== req.user.userId) {
+      await Notification.create({
+        user: task.assignedTo,
+        task: task._id,
+        type: "task_deleted",
+        message,
+      });
+      notifiedUsers.add(task.assignedTo.toString());
+    }
+
+    // Notify creator
+    if (!notifiedUsers.has(task.createdBy.toString())) {
+      await Notification.create({
+        user: task.createdBy,
+        task: task._id,
+        type: "task_deleted",
+        message,
+      });
+    }
+
+    res.status(200).json({ msg: "Task deleted successfully" });
+
+  } catch (err) {
+    res.status(500).json({ msg: "Server error", error: err.message });
   }
 };
+
 
 
 
