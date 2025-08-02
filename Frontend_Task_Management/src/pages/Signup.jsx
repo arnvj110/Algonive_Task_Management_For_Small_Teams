@@ -46,7 +46,8 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
       }, 2000);
 
     } catch (err) {
-      console.error(err);
+
+      console.log(err);
       setError(
   typeof err?.response?.data?.message === "string"
     ? err.response.data.message

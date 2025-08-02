@@ -10,7 +10,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
+  
   const location = useLocation();
   const { login, loading } = useAuth(); // using AuthContext
 
@@ -30,7 +30,8 @@ const Login = () => {
       
       
     } catch (err) {
-      console.error(err);
+
+      console.log(err);
       setError("Invalid email or password");
 
     }
