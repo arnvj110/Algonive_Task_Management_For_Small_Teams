@@ -47,7 +47,12 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     } catch (err) {
       console.error(err);
-      setError(err?.response?.data?.message || "Failed to create account");
+      setError(
+  typeof err?.response?.data?.message === "string"
+    ? err.response.data.message
+    : err.message || "Failed to create account"
+);
+
     } finally {
       setLoading(false);
     }
