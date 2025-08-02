@@ -10,11 +10,10 @@ const TaskDiv = ({ task }) => {
   const [status, setStatus] = useState(task?.status?.toLowerCase());
   const { data: createdByUser } = useUserById(task.createdBy);
   
-  // Check if current user can interact with this task
+  // Permission checks
   const isMyTask = task.assignedTo === user._id || task.createdBy === user._id;
-  
   const canUpdateStatus = task.assignedTo === user._id;
-  const canDelete = task.createdBy === user._id; // Only creator can delete
+  const canDelete = task.createdBy === user._id;
   
   const statusConfig = {
     pending: {
@@ -39,6 +38,7 @@ const TaskDiv = ({ task }) => {
     },
   };
 
+  // Status progression: pending -> inprogress -> completed
   const handleStatusUpdate = async () => {
     if (!canUpdateStatus) {
       alert("You are not assigned to this task.");
@@ -116,17 +116,14 @@ const TaskDiv = ({ task }) => {
         ${!isMyTask ? 'border-gray-300 dark:border-gray-600' : ''}
       `}>
         
-        {/* Decorative top border based on status */}
         <div className={`absolute top-0 left-0 right-0 h-1 rounded-t-2xl ${dotColor}`}></div>
         
-        {/* Task ownership indicator */}
         {!isMyTask && (
           <div className="absolute top-3 left-3 bg-gray-500/80 text-white rounded-full p-1">
             <Lock size={12} />
           </div>
         )}
         
-        {/* Header with Status and Priority */}
         <div className="flex justify-between items-start gap-3">
           <div className={`
             inline-flex items-center gap-2 px-3 py-2 
@@ -152,7 +149,6 @@ const TaskDiv = ({ task }) => {
           )}
         </div>
 
-        {/* Title Section */}
         <div className="relative group">
           <div className={`
             w-full min-h-[120px] p-5 
@@ -176,7 +172,6 @@ const TaskDiv = ({ task }) => {
             </h3>
           </div>
           
-          {/* Completion indicator overlay */}
           {status === 'completed' && (
             <div className="absolute -top-2 -right-2 bg-emerald-500 text-white rounded-full p-2 shadow-lg ">
               <CheckCircle2 size={16} />
@@ -184,7 +179,6 @@ const TaskDiv = ({ task }) => {
           )}
         </div>
 
-        {/* Description */}
         <div className="px-1 flex-1">
           <p className={`
             text-sm leading-relaxed line-clamp-3
@@ -197,10 +191,8 @@ const TaskDiv = ({ task }) => {
           </p>
         </div>
 
-        {/* Footer Information */}
         <div className="mt-auto pt-4 border-t border-gray-200 dark:border-gray-600">
           <div className="grid grid-cols-3 gap-4 text-xs mb-4">
-            {/* Created Date */}
             <div className="flex flex-col items-center text-center space-y-1">
               <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
                 <Calendar size={12} />
@@ -211,7 +203,6 @@ const TaskDiv = ({ task }) => {
               </span>
             </div>
 
-            {/* Creator */}
             <div className="flex flex-col items-center text-center space-y-1">
               <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
                 <User size={12} />
@@ -225,7 +216,6 @@ const TaskDiv = ({ task }) => {
               </span>
             </div>
 
-            {/* Due Date */}
             <div className="flex flex-col items-center text-center space-y-1">
               <div className={`
                 flex items-center gap-1 
@@ -243,63 +233,59 @@ const TaskDiv = ({ task }) => {
             </div>
           </div>
 
-          {/* Action Buttons - Only show if user has permissions */}
           {isMyTask ? (
             <div className="relative overflow-hidden ">
-  <div className="flex gap-2">
-    {(status === "pending" || status === "inprogress") && canUpdateStatus ? (
-      <>
-        <button
-          onClick={handleStatusUpdate}
-          className="flex-grow flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2.5 rounded-lg cursor-pointer"
-        >
-          {status === "pending" ? (
-            <>
-              <Play size={16} />
-              Start Task
-            </>
-          ) : (
-            <>
-              <CheckCircle2 size={16} />
-              Complete
-            </>
-          )}
-        </button>
+              <div className="flex gap-2">
+                {(status === "pending" || status === "inprogress") && canUpdateStatus ? (
+                  <>
+                    <button
+                      onClick={handleStatusUpdate}
+                      className="flex-grow flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2.5 rounded-lg cursor-pointer"
+                    >
+                      {status === "pending" ? (
+                        <>
+                          <Play size={16} />
+                          Start Task
+                        </>
+                      ) : (
+                        <>
+                          <CheckCircle2 size={16} />
+                          Complete
+                        </>
+                      )}
+                    </button>
 
-        {canDelete && (
-          <button
-            onClick={handleDelete}
-            className="flex items-center justify-center bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg cursor-pointer"
-          >
-            <Trash2 size={16} />
-          </button>
-        )}
-      </>
-    ) : status === "completed" ? (
-      <div className='flex flex-col w-full'>
-        <div className="w-full h-10 flex items-center justify-center text-emerald-600 dark:text-emerald-400 text-sm font-medium">
-        <CheckCircle2 size={16} className="mr-2" />
-        Task Completed
-      </div>
-      <button
-            onClick={handleDelete}
-            className="flex gap-2 items-center justify-center bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg cursor-pointer"
-          >
-            Delete
-            <Trash2 size={16} />
-          </button>
-        </div>
-      
-    ) : (
-      <div className="w-full h-10 flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm font-medium">
-        View Only
-      </div>
-    )}
-  </div>
-</div>
-
+                    {canDelete && (
+                      <button
+                        onClick={handleDelete}
+                        className="flex items-center justify-center bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg cursor-pointer"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    )}
+                  </>
+                ) : status === "completed" ? (
+                  <div className='flex flex-col w-full'>
+                    <div className="w-full h-10 flex items-center justify-center text-emerald-600 dark:text-emerald-400 text-sm font-medium">
+                      <CheckCircle2 size={16} className="mr-2" />
+                      Task Completed
+                    </div>
+                    <button
+                      onClick={handleDelete}
+                      className="flex gap-2 items-center justify-center bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg cursor-pointer"
+                    >
+                      Delete
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="w-full h-10 flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm font-medium">
+                    View Only
+                  </div>
+                )}
+              </div>
+            </div>
           ) : (
-            /* No permissions - show read-only indicator */
             <div className="w-full h-10 flex items-center justify-center text-gray-400 dark:text-gray-500 text-sm font-medium border border-gray-200 dark:border-gray-700 rounded-lg">
               <Lock size={14} className="mr-2" />
               Team Task - View Only
@@ -307,14 +293,12 @@ const TaskDiv = ({ task }) => {
           )}
         </div>
 
-        {/* Overdue indicator */}
         {isOverdue && (
           <div className="absolute -top-3 -right-3 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg animate-bounce">
             OVERDUE
           </div>
         )}
 
-        {/* Progress indicator for completed tasks */}
         {status === 'completed' && (
           <div className="absolute inset-0 bg-emerald-500/5 rounded-2xl pointer-events-none"></div>
         )}

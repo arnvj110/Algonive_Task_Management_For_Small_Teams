@@ -5,15 +5,12 @@ import { handleSuccess } from "../components/ui/toastFun";
 import TaskDiv from "../components/tasks/TaskDiv";
 
 const Dashboard = () => {
-  // ✅ Now directly get the tasks array, not the query object
   const { myTasks, loading, myTasksLoading, myTasksError } = useTasks();
-  
   const location = useLocation();
 
   useEffect(() => {
     if (location.state?.showToast) {
       handleSuccess("Login Successful!");
-      // Optional: clear the state after showing toast
       window.history.replaceState({}, document.title);
     }
   }, [location]);
@@ -22,7 +19,7 @@ const Dashboard = () => {
   if (loading || myTasksLoading) {
     return (
       <div className="flex justify-center items-center min-h-[200px]">
-        <div className="text-lg text-gray-600">Loading your tasks...</div>
+        <div className="text-lg text-gray-600">Loading your dashboard...</div>
       </div>
     );
   }
@@ -36,10 +33,65 @@ const Dashboard = () => {
     );
   }
 
+  // Calculate task statistics
+  const completedTasks = myTasks.filter(task => task.status === 'completed' || task.completed);
+  const overdueTasks = myTasks.filter(task => {
+    if (!task.dueDate) return false;
+    return new Date(task.dueDate) < new Date() && task.status !== 'completed' && !task.completed;
+  });
+  const todayTasks = myTasks.filter(task => {
+    if (!task.dueDate) return false;
+    const today = new Date().toDateString();
+    return new Date(task.dueDate).toDateString() === today;
+  });
+  const highPriorityTasks = myTasks.filter(task => task.priority === 'high' && task.status !== 'completed' && !task.completed);
+
   return (
     <div className="flex flex-col items-center">
+      {/* Dashboard Header with Quick Stats */}
+      <div className="w-[85%] mb-6">
+        <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+        
+        {/* Quick Stats Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div className="bg-blue-50 p-4 rounded-lg border">
+            <div className="text-2xl font-bold text-blue-600">{myTasks.length}</div>
+            <div className="text-sm text-blue-700">Total Tasks</div>
+          </div>
+          <div className="bg-green-50 p-4 rounded-lg border">
+            <div className="text-2xl font-bold text-green-600">{completedTasks.length}</div>
+            <div className="text-sm text-green-700">Completed</div>
+          </div>
+          <div className="bg-yellow-50 p-4 rounded-lg border">
+            <div className="text-2xl font-bold text-yellow-600">{todayTasks.length}</div>
+            <div className="text-sm text-yellow-700">Due Today</div>
+          </div>
+          <div className="bg-red-50 p-4 rounded-lg border">
+            <div className="text-2xl font-bold text-red-600">{overdueTasks.length}</div>
+            <div className="text-sm text-red-700">Overdue</div>
+          </div>
+        </div>
+
+        {/* Priority Alerts */}
+        {(overdueTasks.length > 0 || highPriorityTasks.length > 0) && (
+          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded">
+            <div className="flex">
+              <div className="ml-3">
+                <p className="text-sm text-yellow-700">
+                  <span className="font-medium">Attention needed:</span>
+                  {overdueTasks.length > 0 && ` ${overdueTasks.length} overdue task${overdueTasks.length !== 1 ? 's' : ''}`}
+                  {overdueTasks.length > 0 && highPriorityTasks.length > 0 && ', '}
+                  {highPriorityTasks.length > 0 && ` ${highPriorityTasks.length} high priority task${highPriorityTasks.length !== 1 ? 's' : ''}`}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* My Tasks Section */}
       <div className="flex justify-between items-center w-[85%] mb-6">
-        <h1 className="text-2xl font-bold">My Tasks</h1>
+        <h2 className="text-xl font-semibold">My Tasks</h2>
         <div className="text-sm text-gray-500">
           {myTasks.length} task{myTasks.length !== 1 ? 's' : ''} total
         </div>
