@@ -67,6 +67,7 @@ export const useDeleteTask = () => {
       // ✅ Invalidate and refetch task queries after deleting a task
       queryClient.invalidateQueries({ queryKey: ["myTasks"] });
       queryClient.invalidateQueries({ queryKey: ["teamTasks"] });
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
     },onError: (error) => {
   console.error("Task operation failed:", error);
 }

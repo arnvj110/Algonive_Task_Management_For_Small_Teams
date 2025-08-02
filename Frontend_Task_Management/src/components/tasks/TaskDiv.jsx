@@ -276,10 +276,20 @@ const TaskDiv = ({ task }) => {
         )}
       </>
     ) : status === "completed" ? (
-      <div className="w-full h-10 flex items-center justify-center text-emerald-600 dark:text-emerald-400 text-sm font-medium">
+      <div className='flex flex-col w-full'>
+        <div className="w-full h-10 flex items-center justify-center text-emerald-600 dark:text-emerald-400 text-sm font-medium">
         <CheckCircle2 size={16} className="mr-2" />
         Task Completed
       </div>
+      <button
+            onClick={handleDelete}
+            className="flex gap-2 items-center justify-center bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg cursor-pointer"
+          >
+            Delete
+            <Trash2 size={16} />
+          </button>
+        </div>
+      
     ) : (
       <div className="w-full h-10 flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm font-medium">
         View Only
