@@ -1,10 +1,15 @@
 // src/contexts/AuthContext.js
 import { createContext, useContext } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { loginUser, registerUser, fetchCurrentUser } from "../api/auth";
+import { 
+  loginUser, 
+  registerUser, 
+  fetchCurrentUser,
+  updateUserProfile,
+  deleteUserAccount
+} from "../api/auth";
 import { useNavigate } from "react-router-dom";
 import { handleSuccess } from "../components/ui/toastFun";
-
 
 const AuthContext = createContext();
 
@@ -41,7 +46,6 @@ export const AuthProvider = ({ children }) => {
       navigate("/");
     },
     onError: (error) => {
-      // Convert to a format your Login component expects
       throw new Error(error.response?.data?.message || "Login failed");
     }
   });
@@ -57,13 +61,44 @@ export const AuthProvider = ({ children }) => {
     }
   });
 
+  const updateUserMutation = useMutation({
+  mutationFn: (userData) => updateUserProfile(userData),
+  onSuccess: (data) => {
+    queryClient.invalidateQueries(["myTeam"]);
+    queryClient.setQueryData(["user"], data);
+    handleSuccess("Profile updated successfully!");
+  },
+  onError: (error) => {
+    throw error; // Already formatted in the API function
+  }
+});
+
+  const deleteUserMutation = useMutation({
+  mutationFn: () => deleteUserAccount(),
+  onSuccess: () => {
+    localStorage.removeItem("token");
+    queryClient.removeQueries(["user"]);
+    handleSuccess("Account deleted successfully");
+    navigate("/register");
+  },
+  onError: (error) => {
+    throw error; // Already formatted in the API function
+  }
+});
+
   return (
     <AuthContext.Provider
       value={{
         user,
-        loading: isLoading || loginMutation.isLoading,
+        loading: isLoading || 
+                 loginMutation.isLoading || 
+                 registerMutation.isLoading ||
+                 updateUserMutation.isLoading ||
+                 deleteUserMutation.isLoading,
         login: loginMutation.mutateAsync,
         register: registerMutation.mutateAsync,
+        updateUser: updateUserMutation.mutateAsync,
+        deleteUser: deleteUserMutation.mutateAsync,
         logout,
       }}
     >

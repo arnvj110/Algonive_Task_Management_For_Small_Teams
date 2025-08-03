@@ -4,7 +4,8 @@ import Error from "../components/ui/Error";
 import { handleSuccess } from "../components/ui/toastFun";
 
 const Profile = () => {
-  const { user, updateUser, deleteAccount } = useAuth();
+  const { user, updateUser, deleteUser } = useAuth();
+  
 
   const [formData, setFormData] = useState({
     username: user?.username || "",
@@ -24,7 +25,7 @@ const Profile = () => {
     setError("");
     try {
       await updateUser(formData);
-      handleSuccess("Profile updated successfully");
+      
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong");
     }
@@ -34,7 +35,7 @@ const Profile = () => {
     setError("");
     setDeleting(true);
     try {
-      await deleteAccount();
+      await deleteUser();
     } catch (err) {
       setError(err.response?.data?.message || "Failed to delete account");
       setDeleting(false);
