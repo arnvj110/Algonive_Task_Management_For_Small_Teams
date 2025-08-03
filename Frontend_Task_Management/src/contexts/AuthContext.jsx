@@ -1,4 +1,4 @@
-// src/contexts/AuthContext.js
+
 import { createContext, useContext } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { 
@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }) => {
     handleSuccess("Profile updated successfully!");
   },
   onError: (error) => {
-    throw error; // Already formatted in the API function
+    throw error; 
   }
 });
 

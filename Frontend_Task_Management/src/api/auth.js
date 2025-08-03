@@ -22,7 +22,7 @@ export const fetchCurrentUser = async () => {
     });
   } catch (err) {
     console.log(err);
-    throw err; // Re-throw the error to be caught by the query
+    throw err; 
   }
   return response.data;
 };
@@ -39,7 +39,7 @@ export const fetchUserById = async (id) => {
     });
   } catch (err) {
     console.log(err);
-    throw err; // Re-throw the error to be caught by the query
+    throw err; 
   }
   return response.data;
 }
