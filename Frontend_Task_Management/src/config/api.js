@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-// Create axios instance with base configuration
+
 const api = axios.create({
-  // baseURL: 'https://algonive-task-management-for-small-teams-gj4f.onrender.com',
-  baseURL:'http://localhost:3000',
+  baseURL: 'https://algonive-task-management-for-small-teams-gj4f.onrender.com',
+  // baseURL:'http://localhost:3000',
   timeout: 20000, //temporary
   headers: {
     'Content-Type': 'application/json',
