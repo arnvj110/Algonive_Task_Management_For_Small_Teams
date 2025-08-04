@@ -126,4 +126,6 @@ Licensed under the MIT License.
 
 ---
 
+## 🎥 Video Demo
 
+<video src="media/Demo.mp4" controls width="100%"></video>
