@@ -46,7 +46,7 @@ cd Algonive_Task_Management_For_Small_Teams
 ### 🔧 Setup Backend
 
 ```bash
-cd backend_task_management
+cd Backend_task_management
 
 # Install backend dependencies
 npm install
@@ -65,7 +65,7 @@ node index.js
 ### 🎨 Setup Frontend
 
 ```bash
-cd frontend_task_management
+cd Frontend_task_management
 
 # Install frontend dependencies
 npm install
@@ -83,12 +83,12 @@ Visit: `http://localhost:5173` (or the default Vite port)
 
 ```
 /
-├── backend_task_management/
+├── Backend_task_management/
 │   ├── models/           # Mongoose models
 │   ├── routes/           # Express routes
 │   ├── controllers/      # Route controllers
 │   └── server.js         # Entry point
-├── frontend_task_management/
+├── Frontend_task_management/
 │   ├── src/              # React components and pages
 │   └── public/
 └── README.md
@@ -123,9 +123,3 @@ Licensed under the MIT License.
 [https://algonive-task-management-for-small.vercel.app/](https://algonive-task-management-for-small.vercel.app/)
 
 > Explore the full functionality of the project in the live deployed version.
-
----
-
-## 🎥 Video Demo
-
-<video src="media/Demo.mp4" controls width="100%"></video>
